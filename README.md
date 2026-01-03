@@ -1,17 +1,36 @@
-# Agent
+# Tic Tac Toe Game with AI Agent
 
-Implementation of intelligent agents for different environments.
+An intelligent Tic Tac Toe game implementation featuring an AI opponent that uses the Minimax algorithm with alpha-beta pruning for optimal decision-making.
 
 ## Overview
 
-This repository contains implementations of intelligent agents that can interact with and solve tasks in different environments:
-
-- **Vacuum Agent** (`vacuum.py`): A reactive and planning-based vacuum cleaner agent that can clean dirty locations and navigate obstacles intelligently
+This project implements a complete Tic Tac Toe game with:
+- **AI Agent**: Unbeatable AI opponent using Minimax algorithm
+- **Heuristic Evaluation**: Smart board evaluation using the heuristic function e(p)
+- **Optimal Play**: Alpha-beta pruning for efficient game tree search
+- **Interactive GUI**: User-friendly interface to play against the AI
+- **Game Analysis**: Detailed heuristic calculations displayed during gameplay
 
 ## Files
 
-- `vacuum.py` - Vacuum world environment with intelligent cleaning agent
+- `Tic_Tac_Toe.py` - Complete game implementation with AI agent
 - `README.md` - This documentation file
+
+## Features
+
+### Core Game Features
+- **Human vs AI**: Play against an intelligent computer opponent
+- **Perfect AI**: The AI never loses (always wins or forces a draw)
+- **Real-time Analysis**: Displays heuristic values and game evaluations
+- **Interactive Board**: Click to make your moves
+- **Game History**: Track all moves and evaluations
+
+### AI Features
+- **Minimax Algorithm**: Explores all possible game states
+- **Alpha-Beta Pruning**: Optimizes search by eliminating unnecessary branches
+- **Heuristic Evaluation**: Uses e(p) = (Player Open Lines) - (Opponent Open Lines)
+- **Depth-First Search**: Efficient game tree traversal
+- **Winning Prediction**: Identifies winning/losing positions in advance
 
 ## Getting Started
 
@@ -20,78 +39,211 @@ This repository contains implementations of intelligent agents that can interact
 - Python 3.7 or higher
 - tkinter (usually included with Python)
 
-### Running the Agent
+### Running the Game
 
 ```bash
-python vacuum.py
+python Tic_Tac_Toe.py
 ```
 
-This will launch a GUI window showing the vacuum agent in action, with real-time visualization of the cleaning process.
+This will launch the game GUI where you can play against the AI.
 
-## Agent Architecture
+## How to Play
 
-### Vacuum Agent Features
+1. **Start Game**: Click "New Game" or launch the application
+2. **Make Your Move**: Click on any empty cell (X is your symbol)
+3. **AI Response**: The AI (O) automatically responds with its optimal move
+4. **Win Condition**: First player to get 3 in a row, column, or diagonal wins
+5. **Draw**: If the board fills and no winner emerges
+6. **Play Again**: Click "New Game" to start a fresh match
 
-- **Intelligent Navigation**: Moves efficiently through the environment
-- **Obstacle Avoidance**: Detects and avoids obstacles
-- **Dirt Detection**: Identifies and cleans dirty locations
-- **Multiple Strategies**: Supports both reactive and planning-based approaches
-- **Visual Feedback**: Real-time GUI showing agent state and environment
+## Game Mechanics
 
-### Agent Components
+### Board Representation
+```
+ 1 | 2 | 3
+-----------
+ 4 | 5 | 6
+-----------
+ 7 | 8 | 9
+```
 
-1. **VacuumAgent Class**: The intelligent agent with decision-making capabilities
-2. **Room Class**: The environment representing the space to be cleaned
-3. **GUI Visualization**: Interactive display using tkinter
+### Winning Conditions
+- **3 in a Row**: Horizontal lines (rows 1-3, 4-6, 7-9)
+- **3 in a Column**: Vertical lines (columns 1-4-7, 2-5-8, 3-6-9)
+- **3 in a Diagonal**: Both diagonals (1-5-9 and 3-5-7)
 
-### Algorithms
+## AI Algorithm Details
 
-- **Reactive Agent**: Makes decisions based on immediate observations
-- **Planning Agent**: Uses search algorithms to find optimal cleaning paths
-- **Obstacle Handling**: Implements collision detection and path finding
+### Minimax Algorithm
 
-## Environment Details
+The AI uses the Minimax algorithm to evaluate all possible game states:
 
-- **Grid-based Room**: Configurable grid size for various room layouts
-- **Cell Types**: Clean, dirty, obstacles, and agent position
-- **Dynamic Obstacles**: Can handle fixed obstacles and dynamic elements
-- **Performance Metrics**: Tracks moves and cleaning efficiency
+1. **Generate States**: Recursively explore all possible moves
+2. **Evaluate Terminal States**: Check for wins, losses, or draws
+3. **Backtrack Scores**: Propagate scores up the game tree
+4. **Choose Best Move**: Select move with highest score
 
-## How to Use
+### Heuristic Function: e(p)
 
-1. Run the vacuum agent: `python vacuum.py`
-2. Watch as the agent navigates the room and cleans dirty areas
-3. The GUI displays:
-   - Agent position and direction
-   - Dirty locations
-   - Obstacles
-   - Cleaning progress
-   - Movement statistics
+The board evaluation uses the heuristic:
+```
+e(p) = (Lines open for Player) - (Lines open for Opponent)
+```
 
-## Performance Metrics
+**Winning Lines**: 8 total (3 rows + 3 columns + 2 diagonals)
 
-The agent tracks:
-- Total moves made
-- Cells cleaned
-- Cleaning efficiency
-- Path optimization
+**Open Line**: A line that contains:
+- No opponent pieces (player can still win this line)
+- At least one player piece (player has potential)
 
-## Customization
+### Algorithm Pseudocode
+
+```
+function minimax(board, depth, isMaximizing):
+    if game_over(board):
+        return evaluate(board)
+    
+    if isMaximizing:  // AI's turn (maximize)
+        bestScore = -infinity
+        for each move:
+            score = minimax(board with move, depth+1, false)
+            bestScore = max(score, bestScore)
+        return bestScore
+    else:             // Player's turn (minimize)
+        bestScore = +infinity
+        for each move:
+            score = minimax(board with move, depth+1, true)
+            bestScore = min(score, bestScore)
+        return bestScore
+```
+
+### Alpha-Beta Pruning
+
+Optimization technique that reduces the number of nodes evaluated:
+- **Alpha**: Best score for maximizer
+- **Beta**: Best score for minimizer
+- **Pruning**: Skip branches where alpha >= beta
+
+## Example Game State Analysis
+
+### Sample Board:
+```
+ X | - | -
+-----------
+ - | O | -
+-----------
+ X | - | -
+```
+
+### Heuristic Calculation for Player 'X':
+- **Player (X) open lines**: 2 (column 1, left diagonal)
+- **Opponent (O) open lines**: 0
+- **e(p)** = 2 - 0 = **2** (Favorable for X)
+
+## Game States
+
+### Winning States
+- Player has 3 in a line: **Evaluation = +10**
+
+### Losing States
+- Opponent has 3 in a line: **Evaluation = -10**
+
+### Draw States
+- Board full, no winner: **Evaluation = 0**
+
+### Intermediate States
+- Calculated using heuristic function e(p)
+
+## Performance
+
+### Time Complexity
+- **Worst Case**: O(9!) ≈ 362,880 nodes
+- **With Alpha-Beta**: Average 10,000-50,000 nodes
+
+### Space Complexity
+- O(depth) = O(9) for recursion stack
+
+### Move Decision Time
+- Typically < 1 second for optimal move selection
+
+## Technical Implementation
+
+### Main Components
+
+1. **Board Class**: Manages game state
+   - Position tracking
+   - Move validation
+   - Win/draw detection
+
+2. **AI Agent Class**: Implements Minimax
+   - Game tree search
+   - Heuristic evaluation
+   - Move selection
+
+3. **GUI Class**: Interactive interface
+   - Board visualization
+   - Move input handling
+   - Game status display
+
+### Key Methods
+
+- `minimax(board, depth, isMaximizing)`: Core algorithm
+- `evaluate(board)`: Terminal state evaluation
+- `calculate_heuristic(board, player)`: Intermediate state evaluation
+- `get_best_move(board)`: AI decision making
+- `is_winning(board, player)`: Win condition check
+
+## Gameplay Tips
+
+### For Players
+- **Center is Powerful**: The middle cell (5) is involved in 4 winning lines
+- **Corners Matter**: Corner cells (1,3,7,9) are involved in 3 winning lines
+- **Block Smartly**: Always block opponent's winning moves when possible
+
+### Against This AI
+- The AI is unbeatable with perfect play
+- The best outcome is a draw
+- This demonstrates optimal game-playing agents
+
+## Customization Options
 
 You can modify:
-- Room dimensions
-- Dirt distribution
-- Obstacle placement
-- Agent strategy and behavior
-- GUI appearance
+- AI difficulty (implement limited search depth)
+- Heuristic function weights
+- Board size (generalize to 4x4, 5x5, etc.)
+- GUI appearance and colors
+- Game speed
 
 ## Future Enhancements
 
-- Multi-agent coordination
-- Learning-based strategies
-- Different room layouts
-- Advanced pathfinding algorithms
-- Performance optimization
+- **Difficulty Levels**: Implement limited search depth for easier gameplay
+- **Game Variants**: Gomoku, Connect Four, larger boards
+- **Machine Learning**: Train neural network to learn evaluation function
+- **Move Annotations**: Show AI's thinking and evaluation scores
+- **Tournament Mode**: Play multiple games with statistics
+- **Network Play**: Online multiplayer support
+- **Opening Library**: Use predefined opening strategies
+
+## Educational Value
+
+This implementation demonstrates:
+- **Game Theory**: Minimax algorithm and game tree search
+- **Algorithm Optimization**: Alpha-beta pruning
+- **Heuristic Functions**: Board evaluation strategies
+- **Artificial Intelligence**: Decision-making under uncertainty
+- **Python Programming**: Class design and GUI development
+- **Recursion**: Deep game tree traversal
+
+## References
+
+- Minimax Algorithm: https://en.wikipedia.org/wiki/Minimax
+- Alpha-Beta Pruning: https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning
+- Game Theory: https://en.wikipedia.org/wiki/Game_theory
+- Adversarial Search: Russell & Norvig - Artificial Intelligence: A Modern Approach
+
+## Author
+
+Agent Repository - Tic Tac Toe Implementation
 
 ## License
 
