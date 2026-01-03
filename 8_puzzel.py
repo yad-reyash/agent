@@ -37,7 +37,19 @@ class node:
 
      for dr, dc , move_name in moves:
        new_row,new_col =row+dr,col+dc
-       
+       new_state = state[:]
+       new_state[zero_index],new_state[new_index] =new_state[inew_ndex],new_state[zero_index]
+    return neghbours
+def slove(self):
+  open_list =[]
+  close_set= set()
+
+
+
+
+  
+
+
        
      
      
