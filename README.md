@@ -1,249 +1,177 @@
-# Tic Tac Toe Game with AI Agent
+# AI Agent Repository
 
-An intelligent Tic Tac Toe game implementation featuring an AI opponent that uses the Minimax algorithm with alpha-beta pruning for optimal decision-making.
+Collection of intelligent agent implementations demonstrating various AI algorithms and problem-solving techniques.
 
 ## Overview
 
-This project implements a complete Tic Tac Toe game with:
-- **AI Agent**: Unbeatable AI opponent using Minimax algorithm
-- **Heuristic Evaluation**: Smart board evaluation using the heuristic function e(p)
-- **Optimal Play**: Alpha-beta pruning for efficient game tree search
-- **Interactive GUI**: User-friendly interface to play against the AI
-- **Game Analysis**: Detailed heuristic calculations displayed during gameplay
+This repository contains three AI agent projects:
+1.**Tic Tac Toe AI** - Game-playing agent using Minimax algorithm
+2. **Block World AI** - Planning agent using STRIPS-like algorithm with BFS
+3. **Vacuum World AI** - Autonomous cleaning agent with reactive and planning strategies
 
 ## Files
 
-- `Tic_Tac_Toe.py` - Complete game implementation with AI agent
+- `Tic_Tac_Toe.py` - Tic Tac Toe game with unbeatable AI opponent
+- `Block_World.py` - Block World problem solver with GUI visualization
+- `vacuum.py` - Vacuum cleaning agent with autonomous navigation
 - `README.md` - This documentation file
 
-## Features
+---
 
-### Core Game Features
-- **Human vs AI**: Play against an intelligent computer opponent
-- **Perfect AI**: The AI never loses (always wins or forces a draw)
-- **Real-time Analysis**: Displays heuristic values and game evaluations
-- **Interactive Board**: Click to make your moves
-- **Game History**: Track all moves and evaluations
+## 1. Tic Tac Toe Game (Tic_Tac_Toe.py)
 
-### AI Features
-- **Minimax Algorithm**: Explores all possible game states
-- **Alpha-Beta Pruning**: Optimizes search by eliminating unnecessary branches
-- **Heuristic Evaluation**: Uses e(p) = (Player Open Lines) - (Opponent Open Lines)
-- **Depth-First Search**: Efficient game tree traversal
-- **Winning Prediction**: Identifies winning/losing positions in advance
+**Description**: Interactive game with perfect-play AI using adversarial search.
 
-## Getting Started
+**Key Features**:
+- Unbeatable AI opponent using Minimax with alpha-beta pruning
+- Heuristic evaluation: e(p) = (Player Open Lines) - (Opponent Open Lines)
+- Real-time board analysis and game state evaluation
+- Interactive GUI for human vs AI gameplay
 
-### Prerequisites
+**Algorithm**: Minimax with Alpha-Beta Pruning
+- Explores all possible game states
+- Prunes unnecessary branches for efficiency
+- Guarantees optimal play (AI never loses)
 
-- Python 3.7 or higher
-- tkinter (usually included with Python)
-
-### Running the Game
-
+**How to Run**:
 ```bash
 python Tic_Tac_Toe.py
 ```
 
-This will launch the game GUI where you can play against the AI.
+**Complexity**: O(9!) worst case, optimized to ~10k-50k nodes with pruning
 
-## How to Play
+---
 
-1. **Start Game**: Click "New Game" or launch the application
-2. **Make Your Move**: Click on any empty cell (X is your symbol)
-3. **AI Response**: The AI (O) automatically responds with its optimal move
-4. **Win Condition**: First player to get 3 in a row, column, or diagonal wins
-5. **Draw**: If the board fills and no winner emerges
-6. **Play Again**: Click "New Game" to start a fresh match
+## 2. Block World AI (Block_World.py)
 
-## Game Mechanics
+**Description**: STRIPS-like planning agent that solves Block World rearrangement problems.
 
-### Board Representation
-```
- 1 | 2 | 3
------------
- 4 | 5 | 6
------------
- 7 | 8 | 9
-```
+**Key Features**:
+- BFS-based planning to find optimal action sequences
+- Autonomous goal achievement with multiple predefined goals
+- Visual GUI showing blocks and robot arm movements
+- Actions: pick_up, put_down, stack, unstack
 
-### Winning Conditions
-- **3 in a Row**: Horizontal lines (rows 1-3, 4-6, 7-9)
-- **3 in a Column**: Vertical lines (columns 1-4-7, 2-5-8, 3-6-9)
-- **3 in a Diagonal**: Both diagonals (1-5-9 and 3-5-7)
+**Algorithm**: Breadth-First Search (BFS)
+- Explores state space to find goal state
+- Tracks visited states to avoid cycles
+- Returns shortest action sequence
 
-## AI Algorithm Details
+**Problem Setup**:
+- Initial: 3 blocks (A, B, C) in specific configuration
+- Goals: Build towers, rearrange blocks, all on table
 
-### Minimax Algorithm
-
-The AI uses the Minimax algorithm to evaluate all possible game states:
-
-1. **Generate States**: Recursively explore all possible moves
-2. **Evaluate Terminal States**: Check for wins, losses, or draws
-3. **Backtrack Scores**: Propagate scores up the game tree
-4. **Choose Best Move**: Select move with highest score
-
-### Heuristic Function: e(p)
-
-The board evaluation uses the heuristic:
-```
-e(p) = (Lines open for Player) - (Lines open for Opponent)
+**How to Run**:
+```bash
+python Block_World.py
 ```
 
-**Winning Lines**: 8 total (3 rows + 3 columns + 2 diagonals)
+**Complexity**: O(b^d) where b=branching factor, d=solution depth
 
-**Open Line**: A line that contains:
-- No opponent pieces (player can still win this line)
-- At least one player piece (player has potential)
+---
 
-### Algorithm Pseudocode
+## 3. Vacuum World AI (vacuum.py)
 
-```
-function minimax(board, depth, isMaximizing):
-    if game_over(board):
-        return evaluate(board)
-    
-    if isMaximizing:  // AI's turn (maximize)
-        bestScore = -infinity
-        for each move:
-            score = minimax(board with move, depth+1, false)
-            bestScore = max(score, bestScore)
-        return bestScore
-    else:             // Player's turn (minimize)
-        bestScore = +infinity
-        for each move:
-            score = minimax(board with move, depth+1, true)
-            bestScore = min(score, bestScore)
-        return bestScore
-```
+**Description**: Autonomous cleaning agent navigating a grid environment with obstacles.
 
-### Alpha-Beta Pruning
+**Key Features**:
+- Intelligent navigation and pathfinding
+- Obstacle detection and avoidance
+- Dirt detection and cleaning
+- Performance metrics tracking
+- Real-time GUI visualization
 
-Optimization technique that reduces the number of nodes evaluated:
-- **Alpha**: Best score for maximizer
-- **Beta**: Best score for minimizer
-- **Pruning**: Skip branches where alpha >= beta
+**Algorithm**: Reactive + Planning Agent
+- Reactive: Responds to immediate observations
+- Planning: Uses search for optimal cleaning paths
+- Handles dynamic and static obstacles
 
-## Example Game State Analysis
+**Environment**:
+- Grid-based room with configurable size
+- Cell types: clean, dirty, obstacles
+- Agent tracks position and direction
 
-### Sample Board:
-```
- X | - | -
------------
- - | O | -
------------
- X | - | -
+**How to Run**:
+```bash
+python vacuum.py
 ```
 
-### Heuristic Calculation for Player 'X':
-- **Player (X) open lines**: 2 (column 1, left diagonal)
-- **Opponent (O) open lines**: 0
-- **e(p)** = 2 - 0 = **2** (Favorable for X)
+**Performance Metrics**: Moves, cells cleaned, efficiency
 
-## Game States
+---
 
-### Winning States
-- Player has 3 in a line: **Evaluation = +10**
+---
 
-### Losing States
-- Opponent has 3 in a line: **Evaluation = -10**
+## Technical Comparison
 
-### Draw States
-- Board full, no winner: **Evaluation = 0**
+| Feature | Tic Tac Toe | Block World | Vacuum World |
+|---------|-------------|-------------|--------------|
+| **Algorithm** | Minimax | BFS Planning | Reactive/Planning |
+| **Search Type** | Adversarial | State Space | Pathfinding |
+| **Optimization** | Alpha-Beta | Visited Set | Heuristic |
+| **Domain** | Game Playing | Planning | Navigation |
+| **State Space** | 9! states | Exponential | Grid-based |
+| **GUI** | Yes | Yes | Yes |
 
-### Intermediate States
-- Calculated using heuristic function e(p)
+## Prerequisites
 
-## Performance
+- Python 3.7 or higher
+- tkinter (included with Python)
 
-### Time Complexity
-- **Worst Case**: O(9!) ≈ 362,880 nodes
-- **With Alpha-Beta**: Average 10,000-50,000 nodes
+## Quick Start
 
-### Space Complexity
-- O(depth) = O(9) for recursion stack
+Run any agent:
+```bash
+python Tic_Tac_Toe.py    # Play Tic Tac Toe
+python Block_World.py     # Watch Block World solver
+python vacuum.py          # Run Vacuum cleaner
+```
 
-### Move Decision Time
-- Typically < 1 second for optimal move selection
+## AI Concepts Demonstrated
 
-## Technical Implementation
+### 1. **Adversarial Search** (Tic Tac Toe)
+- Game tree exploration
+- Min-Max decision making
+- Alpha-beta pruning optimization
+- Heuristic evaluation functions
 
-### Main Components
+### 2. **Automated Planning** (Block World)
+- STRIPS operators (preconditions, effects)
+- Goal-driven action selection
+- State space search
+- Optimal plan generation
 
-1. **Board Class**: Manages game state
-   - Position tracking
-   - Move validation
-   - Win/draw detection
+### 3. **Autonomous Agents** (Vacuum World)
+- Perception-action cycle
+- Reactive decision making
+- Environment modeling
+- Performance measurement
 
-2. **AI Agent Class**: Implements Minimax
-   - Game tree search
-   - Heuristic evaluation
-   - Move selection
+## Learning Outcomes
 
-3. **GUI Class**: Interactive interface
-   - Board visualization
-   - Move input handling
-   - Game status display
-
-### Key Methods
-
-- `minimax(board, depth, isMaximizing)`: Core algorithm
-- `evaluate(board)`: Terminal state evaluation
-- `calculate_heuristic(board, player)`: Intermediate state evaluation
-- `get_best_move(board)`: AI decision making
-- `is_winning(board, player)`: Win condition check
-
-## Gameplay Tips
-
-### For Players
-- **Center is Powerful**: The middle cell (5) is involved in 4 winning lines
-- **Corners Matter**: Corner cells (1,3,7,9) are involved in 3 winning lines
-- **Block Smartly**: Always block opponent's winning moves when possible
-
-### Against This AI
-- The AI is unbeatable with perfect play
-- The best outcome is a draw
-- This demonstrates optimal game-playing agents
-
-## Customization Options
-
-You can modify:
-- AI difficulty (implement limited search depth)
-- Heuristic function weights
-- Board size (generalize to 4x4, 5x5, etc.)
-- GUI appearance and colors
-- Game speed
+This repository demonstrates:
+- **Search Algorithms**: BFS, Minimax, pathfinding
+- **AI Techniques**: Planning, game playing, autonomous agents
+- **Optimization**: Alpha-beta pruning, visited sets, heuristics
+- **Python Skills**: OOP, GUI development, algorithm implementation
+- **Problem Solving**: State representation, action modeling, goal achievement
 
 ## Future Enhancements
 
-- **Difficulty Levels**: Implement limited search depth for easier gameplay
-- **Game Variants**: Gomoku, Connect Four, larger boards
-- **Machine Learning**: Train neural network to learn evaluation function
-- **Move Annotations**: Show AI's thinking and evaluation scores
-- **Tournament Mode**: Play multiple games with statistics
-- **Network Play**: Online multiplayer support
-- **Opening Library**: Use predefined opening strategies
-
-## Educational Value
-
-This implementation demonstrates:
-- **Game Theory**: Minimax algorithm and game tree search
-- **Algorithm Optimization**: Alpha-beta pruning
-- **Heuristic Functions**: Board evaluation strategies
-- **Artificial Intelligence**: Decision-making under uncertainty
-- **Python Programming**: Class design and GUI development
-- **Recursion**: Deep game tree traversal
+- **Tic Tac Toe**: Neural network learning, larger boards (Gomoku)
+- **Block World**: A* search, more complex goals, multiple arms
+- **Vacuum World**: Multi-agent coordination, learning-based navigation
 
 ## References
 
+- Russell & Norvig - *Artificial Intelligence: A Modern Approach*
 - Minimax Algorithm: https://en.wikipedia.org/wiki/Minimax
-- Alpha-Beta Pruning: https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning
-- Game Theory: https://en.wikipedia.org/wiki/Game_theory
-- Adversarial Search: Russell & Norvig - Artificial Intelligence: A Modern Approach
+- STRIPS Planning: https://en.wikipedia.org/wiki/STRIPS
+- Intelligent Agents: https://en.wikipedia.org/wiki/Intelligent_agent
 
 ## Author
 
-Agent Repository - Tic Tac Toe Implementation
+Agent Repository - AI Implementations
 
 ## License
 
